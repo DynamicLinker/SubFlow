@@ -11,11 +11,15 @@ class Transcriber:
     def transctibeVideo(self, video):
         if not os.path.exists(video):
             return (False, 'No File Found')
-        result = self.model.transcribe(video)
+        result = self.model.transcribe(video, word_timestamps=True)
         return result
     
     def getSub(self, video):
         srt_write = get_writer('srt','.')
-        srt_write(self.transctibeVideo(video), video)
+        opt = {
+            "max_words_per_line": 1,
+            "highlight_words": True
+        }
+        srt_write(self.transctibeVideo(video), video, opt)
         return f"{os.path.splitext(os.path.basename(video))[0]}.srt"
     
