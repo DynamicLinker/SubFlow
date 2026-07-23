@@ -1,6 +1,7 @@
 import os
 import time
 import whisper
+from whisper.utils import get_writer
 
 class Transcriber:
     def __init__(self, model = 'base', device='cpu'):
@@ -12,4 +13,9 @@ class Transcriber:
             return (False, 'No File Found')
         result = self.model.transcribe(video)
         return result
+    
+    def getSub(self, video):
+        srt_write = get_writer('srt','.')
+        srt_write(self.transctibeVideo(video), video)
+        return f"{os.path.splitext(os.path.basename(video))[0]}.srt"
     
