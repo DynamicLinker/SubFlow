@@ -17,9 +17,10 @@ class Transcriber:
     def getSub(self, video):
         srt_write = get_writer('srt','.')
         opt = {
-            "max_words_per_line": 1,
-            "highlight_words": True
+            "max_words_per_line": 3,
+            "highlight_words": True,
         }
         srt_write(self.transctibeVideo(video), video, opt)
+        # srt_write(self.transctibeVideo(video), video, {"font_color": "#ff0000"})
         return f"{os.path.splitext(os.path.basename(video))[0]}.srt"
     
