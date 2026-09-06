@@ -10,16 +10,13 @@
 
 <body>
 
-    <!-- Header -->
     <header class="header">
         <div class="logo">SubFlow</div>
         <p>AI-Powered Video Editor</p>
     </header>
 
-    <!-- Main Content -->
     <main class="main-container">
 
-        <!-- Upload Section -->
         <section class="upload-section" id="uploadSection">
             <div class="cloud-icon">☁</div>
             <h1>Upload your video</h1>
@@ -34,29 +31,23 @@
             <p class="file-name" id="fileName"></p>
         </section>
 
-        <!-- Editor Section -->
         <section class="editor-section" id="editorSection">
 
-            <!-- Video Preview -->
             <div class="video-container">
                 <video id="videoPreview" controls></video>
             </div>
 
-            <!-- Timeline Area -->
             <div class="timeline-area">
 
-                <!-- Thumbnails -->
                 <div class="thumbnail-container">
                     <div class="thumbnail-strip" id="thumbnailStrip"></div>
                 </div>
 
-                <!-- Timeline -->
                 <div class="horizontal-timeline">
                     <input type="range" id="fromRange" min="0" max="100" value="0" step="0.1">
                     <input type="range" id="toRange" min="0" max="100" value="100" step="0.1">
                 </div>
 
-                <!-- Time Selection -->
                 <div class="time-box">
                     <div>
                         <span>FROM</span>
@@ -69,7 +60,6 @@
                     </div>
                 </div>
 
-                <!-- Process Button -->
                 <button id="processBtn" class="process-button" type="button">
                     Process Video
                 </button>
@@ -79,7 +69,6 @@
 
         </section>
 
-        <!-- Result Section -->
         <section class="result-section" id="resultSection">
             <h2>Processed Video</h2>
 
@@ -93,7 +82,6 @@
         </section>
     </main>
 
-    <!-- JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>

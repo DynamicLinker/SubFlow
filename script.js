@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Get HTML elements
     const videoInput = document.getElementById("videoInput");
     const chooseBtn = document.getElementById("chooseBtn");
     const fileName = document.getElementById("fileName");
@@ -16,15 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const downloadBtn = document.getElementById("downloadBtn");
     const thumbnailStrip = document.getElementById("thumbnailStrip");
 
-    // Store selected video
     let selectedVideo = null;
 
-    // Choose Video button
     chooseBtn.addEventListener("click", function () {
         videoInput.click();
     });
 
-    // Video selected
     videoInput.addEventListener("change", function () {
         const videoFile = videoInput.files[0];
 
@@ -40,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
         videoPreview.load();
     });
 
-    // Load video metadata
     videoPreview.addEventListener("loadedmetadata", function () {
         const duration = videoPreview.duration;
 
@@ -58,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
         generateThumbnails();
     });
 
-    // Format seconds as MM:SS
     function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = Math.floor(seconds % 60);
@@ -70,7 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-    // From slider
     fromRange.addEventListener("input", function () {
         let from = Number(fromRange.value);
         const to = Number(toRange.value);
@@ -84,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function () {
         videoPreview.currentTime = from;
     });
 
-    // To slider
     toRange.addEventListener("input", function () {
         let to = Number(toRange.value);
         const from = Number(fromRange.value);
@@ -98,7 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
         videoPreview.currentTime = to;
     });
 
-    // Generate video thumbnails
     function generateThumbnails() {
         thumbnailStrip.innerHTML = "";
 
@@ -111,7 +102,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Create a single thumbnail
     function createThumbnail(time) {
         const canvas = document.createElement("canvas");
 
@@ -149,7 +139,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Process video
     processBtn.addEventListener("click", async function () {
         if (!selectedVideo) {
             status.textContent = "Please select a video first.";
@@ -167,7 +156,40 @@ document.addEventListener("DOMContentLoaded", function () {
             "Selected: " +
             formatTime(from) +
             " → " +
-            formatTime(to);
+            formatTime(to) +
+            " (Processing video...)";
+
+        processBtn.disabled = true;
+
+        try {
+            const formData = new FormData();
+            formData.append("file", selectedVideo);
+
+            const response = await fetch('http://localhost:8000/api/v1/getVideo', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error("Server error: " + response.status);
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            resultVideo.src = url;
+            downloadBtn.href = url;
+            
+            resultSection.style.display = "block";
+            status.textContent = "Processing complete!";
+            
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        } catch (error) {
+            console.error("Error connecting to backend:", error);
+            status.textContent = "An error occurred while processing.";
+        } finally {
+            processBtn.disabled = false;
+        }
     });
 
 });
