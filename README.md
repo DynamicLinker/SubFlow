@@ -58,4 +58,34 @@ python main.py --input video.mp4 --output out.mp4 --model base
 
 ---
 
+## Web Interface (GUI)
+
+SubFlow also includes a web interface for processing videos! You can run the backend server using Docker and serve the frontend locally.
+
+### 1. Run the Backend API (via Docker)
+To avoid installing `ffmpeg` and managing Python environments on your local machine, you can run the FastAPI backend inside a Docker container.
+
+First, build the Docker image:
+```bash
+docker build -t subflow-backend .
+```
+
+Then, run the container (this maps port 8000 on your machine to the container):
+```bash
+docker run -p 8000:8000 -v $(pwd):/app subflow-backend
+```
+*(The backend API will now be accessible at `http://localhost:8000`)*
+
+### 2. Run the Frontend UI
+With the backend running, open a new terminal window and start a local HTTP server for the frontend files:
+
+```bash
+cd Frontend
+python3 -m http.server 8080
+```
+
+Now, open your web browser and navigate to `http://localhost:8080` to use the SubFlow UI!
+
+---
+
 *Created by Ajitesh Chaurasia*
